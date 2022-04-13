@@ -5,10 +5,10 @@ class Cars{
     protected int $price =-1;
     protected int $member = 0;
     protected int $member_capacity = -1;
-    protected int $velocity = 0;
-    protected int $velocityMax = -1;
+    protected float $velocity = 0;
+    protected float $velocityMax = -1;
     protected int $height = -1;
-    protected int $acceleration = -1;
+    protected float $acceleration = -1;
 
     // データ入力
     public function initialize($name="名前がありません",$price,$member_capacity,$acceleration){
@@ -30,8 +30,8 @@ class Cars{
 
     // 乗車
     public function memberCountUp(){
-        if($this->member_capacity = $this->member){
-            echo "もう乗れません。";
+        if($this->member_capacity == $this->member){
+            echo "もう乗れません。\n";
             return;
         }
         $this->acceleration /= (1 - $this->member*0.05);
@@ -42,7 +42,7 @@ class Cars{
     // 降車
     public function memberCountDown(){
         if($this->member < 1){
-            echo "誰も乗ってません。";
+            echo "誰も乗ってません。\n";
             return;
         }
         $this->acceleration /= (1 - $this->member*0.05);
@@ -61,7 +61,7 @@ class Cars{
         echo "定員{$this->member_capacity}人\n";
         echo "乗車人数{$this->member}人\n";
         echo "現在速度{$this->velocity}km/h\n";
-        echo "現在加速度{$this->acceleration}km/h\n";
+        echo "現在加速度{$this->acceleration}(km/h)/s\n";
     }
 }
 
@@ -75,19 +75,26 @@ class Honda extends Cars{
 }
 
 class Nissan extends Cars{
-    public function __construct($price=null,$member_capacity=6){
+    public function __construct($price=null,$member_capacity=5){
         if(!$price){
             $price = mt_rand(50,100);
         }
         $this->initialize("Nissan",$price,$member_capacity,$acceleration=20);
         //  Nissanやらかし処理
+        echo 
+        "Nissanは製造時にやらかしました。
+        {$this->acceleration}(km/h)/s
+        ↓ 加速度60%減
+        ";
         $this->acceleration *= 0.6;
+        echo 
+        "{$this->acceleration}(km/h)/s\n";
     }
 }
 
 class Ferrari extends Cars{
     protected $height_change = false; // 車高
-    public function __construct($price=null,$member_capacity=8){
+    public function __construct($price=null,$member_capacity=2){
         $this->height = 1050;
         if(!$price){
             $price = mt_rand(900,2000);
@@ -102,7 +109,7 @@ class Ferrari extends Cars{
         echo "定員：{$this->member_capacity}人\n";
         echo "乗車人数：{$this->member}人\n";
         echo "現在速度：{$this->velocity}km/h\n";
-        echo "現在加速度：{$this->acceleration}km/h\n";
+        echo "現在加速度：{$this->acceleration}(km/h)/s\n";
         echo "現在車高：{$this->height}mm\n";
         if($this->height_change){
             echo "リフトアップ中！";
