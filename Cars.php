@@ -10,6 +10,7 @@ class Cars{
     protected int $height = 0;
     protected int $acceleration = -1;
 
+    // データ入力
     public function initialize($name="名前がありません",$price,$member_capacity,$acceleration){
         $this->name = $name;
         $this->member_capacity = $member_capacity;
@@ -17,18 +18,22 @@ class Cars{
         $this->price = $price;
     }
 
+    // 加速
     public function velocityUp($num){
         $this->velocity += $num;
     }
 
+    // 減速
     public function velocityDown($num){
         $this->velocity -= $num;
     }
 
+    // 乗車
     public function memberCountUp(){
         $this->member += 1;
     }
 
+    // 車情報表示
     public function showCarData(){
         echo "車種：{$this->name}\n";
         echo "値段：{$this->price}万円\n";
@@ -58,7 +63,7 @@ class Nissan extends Cars{
 }
 
 class Ferrari extends Cars{
-    protected $height_change = false;
+    protected $height_change = false; // 車高
     public function __construct($price=null,$member_capacity=8){
         $this->height = 1050;
         if(!$price){
@@ -67,6 +72,7 @@ class Ferrari extends Cars{
         $this->initialize("Ferrari",$price,$member_capacity,$acceleration=30);
     }
 
+    // 車情報表示
     public function showCarData(){
         echo "車種：{$this->name}\n";
         echo "値段：{$this->price}万円\n";
@@ -80,6 +86,7 @@ class Ferrari extends Cars{
         }
     }
 
+    // 車高変更
     public function heightChange(){
         if($this->height_change){
             echo "リフトダウン実行";
