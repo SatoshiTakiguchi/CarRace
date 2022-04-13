@@ -11,7 +11,7 @@ class Cars{
     protected float $acceleration = -1;
 
     // データ入力
-    public function initialize($name="名前がありません",$price,$member_capacity,$acceleration){
+    protected function initialize($name="名前がありません",$price,$member_capacity,$acceleration){
         $this->name = $name;
         $this->member_capacity = $member_capacity;
         $this->acceleration = $acceleration;
