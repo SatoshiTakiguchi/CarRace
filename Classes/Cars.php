@@ -80,6 +80,7 @@ class Nissan extends Cars{
             $price = mt_rand(50,100);
         }
         $this->initialize("Nissan",$price,$member_capacity,$acceleration=20);
+        //  Nissanやらかし処理
         $this->acceleration *= 0.6;
     }
 }
@@ -120,6 +121,16 @@ class Ferrari extends Cars{
             $this->acceleration *= 0.8;
         }
         $this->height_change = !$this->height_change;
+    }
+}
+
+class Toyota extends Cars{
+    public function __construct($price=null,$member_capacity=8){
+        if(!$price){
+            $price = mt_rand(200,400);
+        }
+        $this->initialize("Toyota",$price,$member_capacity,$acceleration=20);
+        $this->acceleration += $this->price * 0.01;
     }
 }
 
