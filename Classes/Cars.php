@@ -11,21 +11,33 @@ class Cars{
     protected float $acceleration = -1;
 
     // データ入力
-    protected function initialize($name="名前がありません",$price,$member_capacity,$acceleration){
+    protected function initialize($name="名前がありません",$price,$member_capacity,$acceleration,$velocityMax){
         $this->name = $name;
         $this->member_capacity = $member_capacity;
         $this->acceleration = $acceleration;
         $this->price = $price;
+        $this->velocityMax = $velocityMax;
+    }
+
+    // データ取得
+    public function getPrice(){
+        return $this->price;
+    }
+    public function getVelocity(){
+        return $this->velocity;
     }
 
     // 加速
-    public function velocityUp($num){
-        $this->velocity += $num;
+    public function velocityUp($time){
+        $this->velocity += $this->acceleration * $time;
+        if($this->velocityMax < $this->velocity){
+            $this->velocity = $this->velocityMax;
+        }
     }
 
     // 減速
-    public function velocityDown($num){
-        $this->velocity -= $num;
+    public function velocityDown($time){
+        $this->velocity -= $this->acceleration * $time;;
     }
 
     // 乗車
@@ -50,10 +62,6 @@ class Cars{
         $this->acceleration *= (1 - $this->member*0.05);
     }
 
-    public function getPrice(){
-        return $this->price;
-    }
-
     // 車情報表示
     public function showCarData(){
         echo "車種：{$this->name}\n";
@@ -70,7 +78,7 @@ class Honda extends Cars{
         if(!$price){
             $price = mt_rand(100,300);
         }
-        $this->initialize("Honda",$price,$member_capacity,$acceleration=10);
+        $this->initialize("Honda",$price,$member_capacity,$acceleration=10,120);
     }
 }
 
@@ -79,7 +87,7 @@ class Nissan extends Cars{
         if(!$price){
             $price = mt_rand(50,100);
         }
-        $this->initialize("Nissan",$price,$member_capacity,$acceleration=20);
+        $this->initialize("Nissan",$price,$member_capacity,$acceleration=20,160);
         //  Nissanやらかし処理
         echo 
         "Nissanは製造時にやらかしました。
@@ -99,7 +107,7 @@ class Ferrari extends Cars{
         if(!$price){
             $price = mt_rand(900,2000);
         }
-        $this->initialize("Ferrari",$price,$member_capacity,$acceleration=30);
+        $this->initialize("Ferrari",$price,$member_capacity,$acceleration=30,200);
     }
 
     // 車情報表示
@@ -136,7 +144,7 @@ class Toyota extends Cars{
         if(!$price){
             $price = mt_rand(200,400);
         }
-        $this->initialize("Toyota",$price,$member_capacity,$acceleration=20);
+        $this->initialize("Toyota",$price,$member_capacity,$acceleration=20,170);
         $this->acceleration += $this->price * 0.01;
     }
 }
