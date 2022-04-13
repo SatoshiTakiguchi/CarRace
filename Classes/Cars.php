@@ -7,7 +7,7 @@ class Cars{
     protected int $member_capacity = -1;
     protected int $velocity = 0;
     protected int $velocityMax = -1;
-    protected int $height = 0;
+    protected int $height = -1;
     protected int $acceleration = -1;
 
     // データ入力
@@ -33,10 +33,14 @@ class Cars{
         $this->member += 1;
     }
 
+    public function getPrice(){
+        return $this->price;
+    }
+
     // 車情報表示
     public function showCarData(){
         echo "車種：{$this->name}\n";
-        echo "値段：{$this->price}万円\n";
+        echo "値段：{$this->getPrice()}万円\n";
         echo "定員{$this->member_capacity}人\n";
         echo "乗車人数{$this->member}人\n";
         echo "現在速度{$this->velocity}km/h\n";
