@@ -30,7 +30,24 @@ class Cars{
 
     // 乗車
     public function memberCountUp(){
+        if($this->member_capacity = $this->member){
+            echo "もう乗れません。";
+            return;
+        }
+        $this->acceleration /= (1 - $this->member*0.05);
         $this->member += 1;
+        $this->acceleration *= (1 - $this->member*0.05);
+    }
+
+    // 降車
+    public function memberCountDown(){
+        if($this->member < 1){
+            echo "誰も乗ってません。";
+            return;
+        }
+        $this->acceleration /= (1 - $this->member*0.05);
+        $this->member -= 1;
+        $this->acceleration *= (1 - $this->member*0.05);
     }
 
     public function getPrice(){
@@ -63,6 +80,7 @@ class Nissan extends Cars{
             $price = mt_rand(50,100);
         }
         $this->initialize("Nissan",$price,$member_capacity,$acceleration=20);
+        $this->acceleration *= 0.6;
     }
 }
 
