@@ -10,13 +10,16 @@ require 'Classes/Fields.php';
 $field = new Fields();
 
 $honda = new Honda();
-$honda->memberCountUp();
-$field->addCar($honda);
-
 $ferrari = new Ferrari();
+
+// ドライバー乗車
+$honda->memberCountUp();
 $ferrari->memberCountUp();
+// レース参加
+$field->addCar($honda);
 $field->addCar($ferrari);
 
+// レーススタート
 $field->gameStart();
 
 
