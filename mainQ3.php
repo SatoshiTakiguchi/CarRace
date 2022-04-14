@@ -1,5 +1,8 @@
 <?php
-require 'Classes/Cars.php';
+require 'Classes/Cars/Honda.php';
+require 'Classes/Cars/Nissan.php';
+require 'Classes/Cars/Ferrari.php';
+require 'Classes/Cars/Toyota.php';
 
 $created_cars = [];
 function randomCreateHonda(){
