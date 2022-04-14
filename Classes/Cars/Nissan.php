@@ -6,7 +6,7 @@ class Nissan extends Cars{
         if(!$price){
             $price = mt_rand(50,100);
         }
-        $this->initialize("Nissan",$price,$member_capacity,$acceleration=15,160);
+        parent::__construct("Nissan",$price,$member_capacity,$acceleration=15,160);
         //  Nissanやらかし処理
          echo 
          "Nissanは製造時にやらかしました。

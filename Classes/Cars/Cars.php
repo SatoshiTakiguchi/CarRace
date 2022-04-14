@@ -1,6 +1,6 @@
 <?php
 
-class Cars{
+abstract class Cars{
     protected String $name;
     protected int $price =-1;
     protected int $member = 0;
@@ -11,7 +11,7 @@ class Cars{
     protected float $acceleration = -1;
 
     // データ入力
-    protected function initialize($name="名前がありません",$price,$member_capacity,$acceleration,$velocityMax){
+    protected function __construct($name="名前がありません",$price,$member_capacity,$acceleration,$velocityMax){
         $this->name = $name;
         $this->member_capacity = $member_capacity;
         $this->acceleration = $acceleration;
