@@ -11,7 +11,7 @@ class Nissan extends Cars{
          echo 
          "Nissanは製造時にやらかしました。
          {$this->acceleration}(km/h)/s
-         ↓ 加速度60%減
+         ↓ 加速度:60%
          ";
          $this->acceleration *= 0.6;
          echo 
