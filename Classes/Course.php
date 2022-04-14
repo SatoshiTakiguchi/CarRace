@@ -1,6 +1,7 @@
 <?php
 
-require 'Road.php';
+require 'Road/Straight.php';
+require 'Road/Corner.php';
 
 class Course{
     private $course = [];
