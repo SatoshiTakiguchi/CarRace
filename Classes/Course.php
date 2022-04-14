@@ -4,25 +4,30 @@ require 'Road/Straight.php';
 require 'Road/Corner.php';
 
 class Course{
-    private $course = [];
-    private $distance = 0;
+    private $course = []; // ['course_object' => 道, 'distance' => その道の終了位置]
 
     // コース作成
     public function __construct($max_distance = 2000){
-        while($this->distance < $max_distance){
+        $distance = 0;
+        while($distance < $max_distance){
+            // straight か cornerか
             $p = mt_rand(0,100);
             if($p<30){
                 $road = new Straight();
             }else{
                 $road = new Corner();
             }
+
             $dist = $road->getDistance();
-            if($max_distance < $this->distance + $dist){
-                $road->setDistance($max_distance - $this->distance);
+
+            // 全長を超えた時の処理
+            if($max_distance < $distance + $dist){
+                $road->setDistance($max_distance - $distance);
                 $dist = $road->getDistance();
             }
-            $this->distance += $dist;
-            $this->course[] = ['course_object' => $road,'distance' => $this->distance];
+
+            $distance += $dist;
+            $this->course[] = ['course_object' => $road,'distance' => $distance];
         }
     }
 

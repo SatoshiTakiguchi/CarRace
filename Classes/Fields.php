@@ -3,10 +3,10 @@
 require 'Course.php';
 
 class Fields{
-    private $car_list = [];
-    private $minutes = 100;
-    private $course_range = 3000;
-    private $result = [];
+    private $car_list = []; // 出場車のリスト
+    private $minutes = 100; // 制限時間
+    private $course_range = 3000; // コースの長さ
+    private $result = []; // 結果記録リスト
 
     // 車の追加
     public function addCar($car){
@@ -50,16 +50,21 @@ class Fields{
 
     // 車の前進処理
     private function forwardCar(&$car_data,$time,$road){
+        // ペナルティ時間処理
         if($car_data['penalty_time'] > 0){
             $car_data['penalty_time'] -= $time;
             return;
         }
+
         $velocity = $car_data['object']->getVelocity();
+
+        // 道の許容速度処理
         if($road->getAllowableVelocity() < $velocity){
             $car_data['object']->setVelocity(10);
             $car_data['penalty_time'] = 2;
             echo "{$car_data['object']->getName()}はクラッシュした。\n";
         }
+
         $car_data['position'] += $velocity * $time;
     }
 
