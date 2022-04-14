@@ -8,7 +8,7 @@ class Ferrari extends Cars{
         if(!$price){
             $price = mt_rand(900,2000);
         }
-        $this->initialize("Ferrari",$price,$member_capacity,$acceleration=30,200);
+        $this->initialize("Ferrari",$price,$member_capacity,$acceleration=20,200);
     }
 
     // 車情報表示

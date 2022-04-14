@@ -30,6 +30,11 @@ class Cars{
         return $this->velocity;
     }
 
+    // 速度代入
+    public function setVelocity($velocity){
+        $this->velocity = $velocity;
+    }
+
     // 加速
     public function velocityUp($time){
         $this->velocity += $this->acceleration * $time;
