@@ -1,4 +1,5 @@
 <?php
+require_once 'Classes/Calc.php';
 
 abstract class Cars{
     protected String $name;
@@ -90,13 +91,14 @@ abstract class Cars{
 
     // 車情報表示
     public function showCarData(){
+        $acceleration = Calc::toKmPerSS($this->acceleration);
         echo "車種：{$this->name}\n";
         echo "値段：{$this->getPrice()}万円\n";
         echo "定員：{$this->member_capacity}人\n";
         echo "乗車人数：{$this->member}人\n";
-        echo "現在速度：{$this->velocity}km/h\n";
-        echo "最高速度：{$this->velocityMax}km/h\n";
-        echo "加速度：{$this->acceleration}(km/h)/s\n";
+        echo "現在速度：{$this->velocity}(km/h)\n";
+        echo "最高速度：{$this->velocityMax}(km/h)\n";
+        echo "加速度：{$acceleration}(m/s^2)\n";
     }
 }
 

@@ -1,11 +1,12 @@
 <?php
 
 require 'Course.php';
+require_once 'Calc.php';
 
 class Fields{
     private $car_list = []; // 出場車のリスト
     private $minutes = 100; // 制限時間
-    private $course_range = 3000; // コースの長さ
+    private $course_range = 1000; // コースの長さ
     private $result = []; // 結果記録リスト
 
     // 車の追加
@@ -29,14 +30,14 @@ class Fields{
         echo "\n";
     }
 
-    // 結果入力
+    // レース結果入力
     public function resultInput($car,$time){
         $name = $car['object']->getName();
         echo "{$name}はゴールしました。\n";
         $this->result[] = ['name' => "{$name}",'time' => $time];
     }
 
-    // 結果出力
+    // レース結果出力
     public function resultPrint(){
         $res_list = $this->result;
         for($i = 0; $i < count($res_list); $i++){
@@ -61,11 +62,11 @@ class Fields{
         // 道の許容速度処理
         if($road->getAllowableVelocity() < $velocity){
             $car_data['object']->setVelocity(10);
-            $car_data['penalty_time'] = 2;
+            $car_data['penalty_time'] = 1;
             echo "{$car_data['object']->getName()}はクラッシュした。\n";
         }
 
-        $car_data['position'] += $velocity * $time;
+        $car_data['position'] += Calc::move($velocity, $time);
     }
 
     // レース開始
@@ -93,9 +94,9 @@ class Fields{
                 }
             }
             
-            // sleep(1);
-            print($i."秒経過\n");
             if($i % 5 == 0){
+                // sleep(1);
+                print($i."秒経過\n");
                 $this->showPosition();
             }
         }
