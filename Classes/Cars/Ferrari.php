@@ -22,6 +22,8 @@ class Ferrari extends Cars{
         echo "現在車高：{$this->height}mm\n";
         if($this->height_change){
             echo "リフトアップ中！\n";
+        }else{
+            echo "リフトアップしてません。\n";
         }
         echo "\n";
     }
@@ -29,11 +31,11 @@ class Ferrari extends Cars{
     // 車高変更
     public function heightChange(){
         if($this->height_change){
-            echo "リフトダウン実行\n";
+            echo "//リフトダウン実行\n";
             $this->height -= 40;
             $this->acceleration /= 0.8;
         }else{
-            echo "リフトアップ実行\n";
+            echo "//リフトアップ実行\n";
             $this->height += 40;
             $this->acceleration *= 0.8;
         }
