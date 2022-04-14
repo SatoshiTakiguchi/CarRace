@@ -18,21 +18,22 @@ class Ferrari extends Cars{
         echo "定員：{$this->member_capacity}人\n";
         echo "乗車人数：{$this->member}人\n";
         echo "現在速度：{$this->velocity}km/h\n";
-        echo "現在加速度：{$this->acceleration}(km/h)/s\n";
+        echo "加速度：{$this->acceleration}(km/h)/s\n";
         echo "現在車高：{$this->height}mm\n";
         if($this->height_change){
-            echo "リフトアップ中！";
+            echo "リフトアップ中！\n";
         }
+        echo "\n";
     }
 
     // 車高変更
     public function heightChange(){
         if($this->height_change){
-            echo "リフトダウン実行";
+            echo "リフトダウン実行\n";
             $this->height -= 40;
             $this->acceleration /= 0.8;
         }else{
-            echo "リフトアップ実行";
+            echo "リフトアップ実行\n";
             $this->height += 40;
             $this->acceleration *= 0.8;
         }

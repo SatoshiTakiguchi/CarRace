@@ -73,7 +73,7 @@ class Cars{
         echo "乗車人数{$this->member}人\n";
         echo "現在速度{$this->velocity}km/h\n";
         echo "最高速度{$this->velocityMax}km/h\n";
-        echo "現在加速度{$this->acceleration}(km/h)/s\n";
+        echo "加速度{$this->acceleration}(km/h)/s\n";
     }
 }
 

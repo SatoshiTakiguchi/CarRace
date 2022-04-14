@@ -46,6 +46,7 @@ function printStatistics($car_list){
     $ave_price = round($sum_price / $sum_cars);
     echo 
     "
+    合計台数：{$sum_cars}台
     合計金額：{$sum_price}万円
     平均金額：{$ave_price}万円
     ";
