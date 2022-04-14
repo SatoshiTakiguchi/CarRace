@@ -69,6 +69,7 @@ class Cars{
         echo "定員{$this->member_capacity}人\n";
         echo "乗車人数{$this->member}人\n";
         echo "現在速度{$this->velocity}km/h\n";
+        echo "最高速度{$this->velocityMax}km/h\n";
         echo "現在加速度{$this->acceleration}(km/h)/s\n";
     }
 }
@@ -89,14 +90,14 @@ class Nissan extends Cars{
         }
         $this->initialize("Nissan",$price,$member_capacity,$acceleration=20,160);
         //  Nissanやらかし処理
-        echo 
-        "Nissanは製造時にやらかしました。
-        {$this->acceleration}(km/h)/s
-        ↓ 加速度60%減
-        ";
-        $this->acceleration *= 0.6;
-        echo 
-        "{$this->acceleration}(km/h)/s\n";
+         echo 
+         "Nissanは製造時にやらかしました。
+         {$this->acceleration}(km/h)/s
+         ↓ 加速度60%減
+         ";
+         $this->acceleration *= 0.6;
+         echo 
+         "{$this->acceleration}(km/h)/s\n";
     }
 }
 
