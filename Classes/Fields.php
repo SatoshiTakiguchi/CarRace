@@ -5,8 +5,8 @@ require_once 'Calc.php';
 
 class Fields{
     private $car_list = []; // 出場車のリスト
-    private $minutes = 100; // 制限時間
-    private $course_range = 1000; // コースの長さ
+    private $minutes = 1000; // 制限時間
+    private $course_range = 3000; // コースの長さ
     private $result = []; // 結果記録リスト
 
     // 車の追加

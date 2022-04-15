@@ -8,7 +8,13 @@ class Ferrari extends Cars{
         if(!$price){
             $price = mt_rand(900,2000);
         }
-        parent::__construct("Ferrari",$price,$member_capacity,$acceleration=20,200);
+        parent::__construct(
+            $name = "Ferrari",
+            $price = $price,
+            $member_capacity = $member_capacity,
+            $acceleration = 40,
+            $velocityMax = 200
+        );
     }
 
     // 車情報表示

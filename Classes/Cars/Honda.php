@@ -6,7 +6,13 @@ class Honda extends Cars{
         if(!$price){
             $price = mt_rand(100,300);
         }
-        parent::__construct("Honda",$price,$member_capacity,$acceleration=10,120);
+        parent::__construct(
+            $name = "Honda",
+            $price = $price,
+            $member_capacity = $member_capacity,
+            $acceleration = 25,
+            $velocityMax = 160
+        );
     }
 }
 

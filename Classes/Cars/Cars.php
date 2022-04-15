@@ -21,7 +21,14 @@ abstract class Cars{
         return $res_list;
     }  
 
-    protected function __construct($name="名前がありません",$price,$member_capacity,$acceleration,$velocityMax){
+    protected function __construct(
+        $name="名前がありません",
+        $price,
+        $member_capacity,
+        $acceleration,
+        $velocityMax
+        )
+    {
         $this->name = $name;
         $this->member_capacity = $member_capacity;
         $this->acceleration = $acceleration;
