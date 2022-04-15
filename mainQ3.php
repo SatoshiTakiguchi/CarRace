@@ -7,7 +7,6 @@ require 'Classes/Cars/Ferrari.php';
 require 'Classes/Cars/Toyota.php';
 
 
-$created_cars = [];
 $honda_list = Cars::randomCreate("Honda");
 $nussan_list = Cars::randomCreate("Nissan");
 $ferrari_list = Cars::randomCreate("Ferrari");

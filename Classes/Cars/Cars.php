@@ -11,7 +11,7 @@ abstract class Cars{
     protected int $height = -1;
     protected float $acceleration = -1;
 
-    //
+    // 車のランダム数生成
     public static function randomCreate($class,$min_range=1,$max_range=20){
         $res_list = [];
         $num = mt_rand($min_range,$max_range);
