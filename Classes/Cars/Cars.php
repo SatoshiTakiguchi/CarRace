@@ -11,6 +11,16 @@ abstract class Cars{
     protected int $height = -1;
     protected float $acceleration = -1;
 
+    //
+    public static function randomCreate($class,$min_range=1,$max_range=20){
+        $res_list = [];
+        $num = mt_rand($min_range,$max_range);
+        for($i = 0; $i < $num; $i++){
+            $res_list[] = new $class();
+        }
+        return $res_list;
+    }  
+
     protected function __construct($name="名前がありません",$price,$member_capacity,$acceleration,$velocityMax){
         $this->name = $name;
         $this->member_capacity = $member_capacity;
@@ -26,17 +36,7 @@ abstract class Cars{
 
     public function __isset($prop):bool{
         return isset($this->$prop);      
-    }
-
-    //
-    public static function randomCreate($class,$min_range=1,$max_range=20){
-        $res_list = [];
-        $num = mt_rand($min_range,$max_range);
-        for($i = 0; $i < $num; $i++){
-            $res_list[] = new $class();
-        }
-        return $res_list;
-    }    
+    }  
 
     // データ取得
     public function getName(){
@@ -47,6 +47,15 @@ abstract class Cars{
     }
     public function getVelocity(){
         return $this->velocity;
+    }
+    public function getHeight(){
+        return $this->height;
+    }
+    public function getAcceleration(){
+        return $this->acceleration;
+    }
+    public function getMember(){
+        return $this->member;
     }
 
     // 速度代入
@@ -98,6 +107,14 @@ abstract class Cars{
         echo "乗車人数：{$this->member}人\n";
         echo "現在速度：{$this->velocity}km/h\n";
         echo "最高速度：{$this->velocityMax}km/h\n";
+        echo "加速度：{$acceleration}m/s^2\n";
+    }
+
+    // 人数と加速度表示
+    public function Q4(){
+        $acceleration = Calc::toKmPerSS($this->acceleration);
+        echo "定員：{$this->member_capacity}人\n";
+        echo "乗車人数：{$this->member}人\n";
         echo "加速度：{$acceleration}m/s^2\n";
     }
 }

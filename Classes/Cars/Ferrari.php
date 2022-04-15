@@ -23,9 +23,9 @@ class Ferrari extends Cars{
         // echo "加速度：{$this->acceleration}(km/h)/s\n";
         echo "現在車高：{$this->height}mm\n";
         if($this->height_change){
-            echo "リフトアップ中！\n";
+            echo "状態：リフトアップ中！\n";
         }else{
-            echo "リフトアップしてません。\n";
+            echo "状態：リフトアップしてません。\n";
         }
     }
 
@@ -41,6 +41,18 @@ class Ferrari extends Cars{
             $this->acceleration *= 0.8;
         }
         $this->height_change = !$this->height_change;
+    }
+
+    // 車高と加速度表示
+    public function Q2(){
+        $acceleration = Calc::toKmPerSS($this->acceleration);
+        if($this->height_change){
+            echo "状態：リフトアップ中！\n";
+        }else{
+            echo "状態：リフトアップしてません。\n";
+        }
+        echo "車高：{$this->height}mm\n";
+        echo "加速度：{$acceleration}m/s^2\n";
     }
 }
 

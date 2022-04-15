@@ -6,11 +6,12 @@ require 'Classes/Cars/Toyota.php';
 
 $ferrari = new Ferrari(1000);
 
-$ferrari->showCarData();
-
+$ferrari->Q2();
+echo "\n";
 $ferrari->heightChange();
-$ferrari->showCarData();
+$ferrari->Q2();
 
+echo "\n";
 $ferrari->heightChange();
-$ferrari->showCarData();
+$ferrari->Q2();
 ?>
