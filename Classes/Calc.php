@@ -7,6 +7,7 @@ class Calc{
     public static function getSumPrice($car_list){
         return array_sum(array_column($car_list,'price'));
     }
+    // 車リストから平均金額取得
     public static function getAveragePrice($car_list){
         $sum_price = Calc::getSumPrice($car_list);
         $sum_cars = count($car_list);
