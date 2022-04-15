@@ -11,6 +11,5 @@ Q3
 Q4  
 ![](/result_src/Q4/Q4-1.png)  
 ![](/result_src/Q4/Q4-2.png)  
-![](/result_src/Q4/Q4-3.png)  
   
 Q5
