@@ -94,7 +94,8 @@ class Fields{
                 }
             }
             
-            if($i % 5 == 0){
+            if($i % (float)5 == 0){
+                print($i % (float)5 ."\n");
                 // sleep(1);
                 print($i."秒経過\n");
                 $this->showPosition();
