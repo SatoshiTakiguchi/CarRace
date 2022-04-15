@@ -27,7 +27,6 @@ class Ferrari extends Cars{
         }else{
             echo "リフトアップしてません。\n";
         }
-        echo "\n";
     }
 
     // 車高変更

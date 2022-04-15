@@ -14,27 +14,22 @@ echo "\n（0人で下車の処理）\n";
 $honda->memberCountDown();
 $honda->showCarData();
 
-echo "\n乗車\n";
+echo "\n(乗車)\n";
 $honda->memberCountUp();
 $honda->showCarData();
-echo "\n乗車\n";
+echo "\n(乗車)\n";
 $honda->memberCountUp();
 $honda->showCarData();
-echo "\n下車\n";
+echo "\n(下車)\n";
 $honda->memberCountDown();
 $honda->showCarData();
 echo "\n";
-
-echo "//Nissanの加速度確認\n";
-$nissan->showCarData();
-echo "\n";
-
 
 echo "//乗車人数上限処理\n";
 $ferrari->memberCountUp();
 $ferrari->memberCountUp();
 $ferrari->showCarData();
-echo "\n乗車\n";
+echo "\n(乗車)\n";
 $ferrari->memberCountUp();
 
 ?>

@@ -23,6 +23,7 @@ class Calc{
         return round($velocity * 1000 / (60*60) * $time);
     }
 
+    // m/s^2に変換
     public static function toKmPerSS($acceleration){
         return round($acceleration * 1000 / (60*60),1);
     }
