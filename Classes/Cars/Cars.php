@@ -78,8 +78,8 @@ abstract class Cars{
     }
 
     // 減速
-    public function velocityDown($num){
-        $this->velocity -= $num;
+    public function velocityDown($time, $num){
+        $this->velocity -= $num * $time;
     }
 
     // 乗車

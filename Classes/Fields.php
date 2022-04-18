@@ -2,6 +2,7 @@
 
 require 'Course/Course.php';
 require_once 'Calc.php';
+require 'Classes/Driver.php';
 
 class Fields{
     private $car_list = []; // 出場車のリスト　車の追加参照
@@ -98,14 +99,19 @@ class Fields{
 
     // 並べ替え
     private function sortCars(){
+        // 元の順位
         $origin_list = array_column($this->createProgress(),'name');
 
+        // 並び替え
         $positions = array_column($this->car_list,'position');
         array_multisort($positions, SORT_DESC, $this->car_list);
 
+        // 新しい順位
         $after_list = array_column($this->createProgress(),'name');
+
+        // 順位変動があるなら
         if(array_diff_assoc($origin_list, $after_list)){
-            echo "順位が変動した。\n";
+            echo "順位が変動した！\n";
             foreach($after_list as $key => $val){
                 $origin = array_keys($origin_list, $val);
                 $origin = $origin[0];
@@ -123,10 +129,23 @@ class Fields{
         }
     }
 
+    // 車操作
+    private function operationCar($car, $delta_time, $road){
+        $road_type = $road->getType();
+        $velocity = $car->getVelocity();
+        if($road_type == "before_corner" && $velocity > 50){
+            // 減速処理
+            $num = Driver::brakeStrength();
+            $car->velocityDown($delta_time, $num);
+        }else{
+            // 加速処理
+            $car->velocityUp($delta_time);
+        }
+    }
+
     // レース開始
     public function gameStart(){
         $course = new Course($this->course_range);
-        print_r($course);
         $delta_time = 0.5;
         echo "レーススタート\n";
 
@@ -134,11 +153,12 @@ class Fields{
         for($i = 0 + $delta_time; $i < $this->minutes; $i += $delta_time){
             // すべての車の更新
             for($j = 0; $j < count($this->car_list); $j++){
+                // 車取得
                 $car = &$this->car_list[$j];
-                // 加速処理
-                $car['object']->velocityUp($delta_time);
                 // 道取得
                 $road = $course->getRoad($car['position']);
+                // 車の操作
+                $this->operationCar($car['object'], $delta_time, $road);
                 
                 // 前進処理
                 $this->forwardCar($car,$delta_time,$road);
