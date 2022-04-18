@@ -60,11 +60,10 @@ class Fields{
             $num = $i + 1;
             $car = $res_list[$i]['object'];
             $acceleration = Calc::toKmPerSS($car->getAcceleration());
-            echo "
-            {$num}位：{$car->getName()}(加速度:{$acceleration}m/s^2 最高速度:{$car->getVelocityMax()}km/h)
-            記録：{$res_list[$i]['time']}秒
-            クラッシュ回数：{$res_list[$i]['crush_num']}回
-            ";
+            echo "{$num}位：{$car->getName()}(加速度:{$acceleration}m/s^2 最高速度:{$car->getVelocityMax()}km/h)\n";
+            echo "記録：{$res_list[$i]['time']}秒\n";
+            echo "クラッシュ回数：{$res_list[$i]['crush_num']}回\n";
+            echo "\n";
         }
     }
 
@@ -172,7 +171,7 @@ class Fields{
                 echo "\n";
             }
         }
-        echo "計：{$this->course_range}m";
+        echo "計：{$this->course_range}m\n";
     }
 
     // レース開始
