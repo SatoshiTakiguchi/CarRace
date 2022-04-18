@@ -2,7 +2,6 @@
 
 class Calc{
 
-
     // 車リストから合計金額取得
     public static function getSumPrice($car_list){
         return array_sum(array_column($car_list,'price'));

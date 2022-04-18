@@ -2,6 +2,7 @@
 
 require 'Road/Straight.php';
 require 'Road/Corner.php';
+require 'Road/BeforeCorner.php';
 
 class Course{
     private $course = []; // ['course_object' => 道, 'distance' => その道の終了位置]
@@ -27,8 +28,25 @@ class Course{
             }
 
             $distance += $dist;
-            $this->course[] = ['course_object' => $road,'distance' => $distance];
+
+            if($road->getType() == "corner"){
+                // コーナー手前距離設定
+                $befor_coner_dist = 30;
+                // コーナー距離修正
+                $road->setDistance($road->getDistance() - $befor_coner_dist);
+
+                // コーナー手前作成
+                $befor_coner = new BeforeCorner($befor_coner_dist);
+                // 道の追加
+                $this->addRoad($befor_coner, $distance-30);
+                $this->addRoad($road, $distance);
+            }else{
+                $this->addRoad($road, $distance);
+            }
         }
+    }
+    private function addRoad($road, $distance){
+        $this->course[] = ['course_object' => $road,'distance' => $distance];
     }
 
     // 現在位置からどの道にいるかを返す

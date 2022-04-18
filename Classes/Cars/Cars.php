@@ -36,11 +36,10 @@ abstract class Cars{
         $this->velocityMax = $velocityMax;
     }
 
-    //
+    // array_columnのため
     public function __get($prop){
         return $this->$prop;
     }
-
     public function __isset($prop):bool{
         return isset($this->$prop);      
     }  
@@ -79,8 +78,8 @@ abstract class Cars{
     }
 
     // 減速
-    public function velocityDown($time){
-        $this->velocity -= $this->acceleration * $time;;
+    public function velocityDown($num){
+        $this->velocity -= $num;
     }
 
     // 乗車

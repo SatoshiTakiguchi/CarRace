@@ -57,7 +57,7 @@ class Fields{
             $res_list[] = ['name' => $car_data['name'], '状態' => "ゴール"];
         }
         foreach ($this->car_list as $car_data){
-            $res_list[] = ['name' => $car_data['object']->getName(), '現在位置' => "{$car_data['position']}m"];
+            $res_list[] = ['name' => $car_data['object']->getName(), '状態' => "{$car_data['position']}m"];
         }
         return $res_list;
     }
@@ -71,7 +71,7 @@ class Fields{
         for($i = 0; $i < count($res_list); $i++){
             $car_data = $res_list[$i];
             $num = $i + 1;
-            echo "{$num}位：{$car_data['name']} 状態：{$car_data['状態']}\n";
+            echo "{$num}位：{$car_data['name']} 現在位置：{$car_data['状態']}\n";
         }
     }
 
@@ -90,7 +90,7 @@ class Fields{
             $car_data['object']->setVelocity(10);
             $car_data['penalty_time'] = 1;
             echo "{$car_data['object']->getName()}はクラッシュした。\n\n";
-            sleep(1);
+            $this->sleep_s();
         }
 
         $car_data['position'] += Calc::move($velocity, $time);
@@ -119,13 +119,14 @@ class Fields{
                 }
             }
             echo "\n";
-            sleep(1);
+            $this->sleep_s();
         }
     }
 
     // レース開始
     public function gameStart(){
         $course = new Course($this->course_range);
+        print_r($course);
         $delta_time = 0.5;
         echo "レーススタート\n";
 
@@ -138,13 +139,14 @@ class Fields{
                 $car['object']->velocityUp($delta_time);
                 // 道取得
                 $road = $course->getRoad($car['position']);
+                
                 // 前進処理
                 $this->forwardCar($car,$delta_time,$road);
                 // ゴール判定→結果リストに格納
                 if($car['position'] >= $this->course_range){
                     $this->resultInput($car,$i);
                     array_splice($this->car_list,$j,1);
-                    sleep(1);
+                    $this->sleep_s();
                 }
             }
 
@@ -159,12 +161,15 @@ class Fields{
             if($i % (float)10 == 0){
                 print($i."秒経過\n");
                 $this->sortCars();
-                sleep(1);
+                $this->sleep_s();
                 $this->printProgress();
                 echo "\n";
-                sleep(1);
+                $this->sleep_s();
             }
         }
+    }
+    private function sleep_s(){
+        // sleep(1);
     }
 }
 
