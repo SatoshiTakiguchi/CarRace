@@ -2,7 +2,7 @@
 require_once 'Cars.php';
 
 class Ferrari extends Cars{
-    protected $height_change = false; // 車高
+    protected $isLiftUp = false; // 車高
     public function __construct($price=null,$member_capacity=2){
         $this->height = 1050;
         if(!$price){
@@ -28,7 +28,7 @@ class Ferrari extends Cars{
         // echo "最高速度{$this->velocityMax}km/h\n";
         // echo "加速度：{$this->acceleration}(km/h)/s\n";
         echo "現在車高：{$this->height}mm\n";
-        if($this->height_change){
+        if($this->isLiftUp){
             echo "状態：リフトアップ中！\n";
         }else{
             echo "状態：リフトアップしてません。\n";
@@ -37,7 +37,7 @@ class Ferrari extends Cars{
 
     // 車高変更
     public function heightChange(){
-        if($this->height_change){
+        if($this->isLiftUp){
             echo "//リフトダウン実行\n";
             $this->height -= 40;
             $this->acceleration /= 0.8;
@@ -46,13 +46,13 @@ class Ferrari extends Cars{
             $this->height += 40;
             $this->acceleration *= 0.8;
         }
-        $this->height_change = !$this->height_change;
+        $this->isLiftUp = !$this->isLiftUp;
     }
 
     // 車高と加速度表示
     public function Q2(){
         $acceleration = Calc::toKmPerSS($this->acceleration);
-        if($this->height_change){
+        if($this->isLiftUp){
             echo "状態：リフトアップ中！\n";
         }else{
             echo "状態：リフトアップしてません。\n";

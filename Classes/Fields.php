@@ -1,6 +1,6 @@
 <?php
 
-require 'Course.php';
+require 'Course/Course.php';
 require_once 'Calc.php';
 
 class Fields{
@@ -38,7 +38,7 @@ class Fields{
     }
 
     // レース結果出力
-    public function resultPrint(){
+    public function printResult(){
         $res_list = $this->result;
         for($i = 0; $i < count($res_list); $i++){
             $num = $i + 1;
@@ -47,6 +47,17 @@ class Fields{
             記録：{$res_list[$i]['time']}秒
             ";
         }
+    }
+
+    public function printProgress(){
+        $finish_cars = $this->result;
+        $moving_cars = arsort($this->car_list);
+        $res_list = array_merge($finish_cars, $moving_cars);
+        foreach($res_list as $car){
+            echo "";
+        }
+        
+        
     }
 
     // 車の前進処理
@@ -79,7 +90,7 @@ class Fields{
         for($i = 0 + $delta_time; $i < $this->minutes; $i += $delta_time){
             if(!$this->car_list){
                 echo "終了";
-                $this->resultPrint();
+                $this->printResult();
                 break;
             }
             // すべての車の更新
