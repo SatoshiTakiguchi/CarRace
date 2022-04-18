@@ -88,8 +88,10 @@ class Fields{
 
         // 道の許容速度処理
         if($road->getAllowableVelocity() < $velocity){
+            // ペナルティ処理
             $car_data['object']->setVelocity(10);
             $car_data['penalty_time'] = 1;
+
             echo "{$car_data['object']->getName()}はクラッシュした。\n\n";
             $this->sleep_s();
         }
@@ -133,6 +135,8 @@ class Fields{
     private function operationCar($car, $delta_time, $road){
         $road_type = $road->getType();
         $velocity = $car->getVelocity();
+
+        // コーナー前かつ速度が50km/h以上なら
         if($road_type == "before_corner" && $velocity > 50){
             // 減速処理
             $num = Driver::brakeStrength();
@@ -188,8 +192,9 @@ class Fields{
             }
         }
     }
+    // sleep処理を一括でコメントするため
     private function sleep_s(){
-        // sleep(1);
+        sleep(1);
     }
 }
 
