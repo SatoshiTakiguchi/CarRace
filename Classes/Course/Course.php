@@ -47,11 +47,12 @@ class Course{
             }
         }
     }
+    // コースに道追加
     private function addRoad($road, $distance){
         $this->course[] = ['course_object' => $road,'distance' => $distance];
     }
 
-    //
+    // コースリスト取得
     public function getCourse(){
         return $this->course;
     }
@@ -63,10 +64,6 @@ class Course{
                 return $this->course[$i]['course_object'];
             }
         }
-    }
-
-    public function showCourse(){
-        print_r($this->course);
     }
 }
 

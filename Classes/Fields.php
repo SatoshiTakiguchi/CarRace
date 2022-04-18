@@ -17,6 +17,7 @@ class Fields{
         $car_data['position'] = 0;
         $car_data['status'] = "nomal";
         $car_data['penalty_time'] = 0;
+        $car_data['crush_num'] = 0;
         $this->car_list[] = $car_data;
     }
 
@@ -35,7 +36,7 @@ class Fields{
     public function resultInput($car,$time){
         $name = $car['object']->getName();
         echo "{$name}はゴールしました。\n";
-        $this->result[] = ['name' => "{$name}",'time' => $time];
+        $this->result[] = ['name' => "{$name}",'time' => $time, 'crush_num' => $car['crush_num']];
     }
 
     // レース結果出力
@@ -46,6 +47,7 @@ class Fields{
             echo "
             {$num}位：{$res_list[$i]['name']}
             記録：{$res_list[$i]['time']}秒
+            クラッシュ回数：{$res_list[$i]['crush_num']}回
             ";
         }
     }
@@ -90,7 +92,8 @@ class Fields{
         if($road->getAllowableVelocity() < $velocity){
             // ペナルティ処理
             $car_data['object']->setVelocity(10);
-            $car_data['penalty_time'] = 1;
+            $car_data['penalty_time'] = 3;
+            $car_data['crush_num'] += 1;
 
             echo "{$car_data['object']->getName()}はクラッシュした。\n\n";
             $this->sleep_s();
@@ -166,9 +169,13 @@ class Fields{
     public function gameStart(){
         $course = new Course($this->course_range);
         $this->printCourse($course);
+        $this->sleep_s();
+
         $delta_time = 0.5;
         echo "レーススタート\n";
 
+        $show_interval = 10;
+        $object_time = $show_interval;
         // 任意秒数ごとに更新
         for($i = 0 + $delta_time; $i < $this->minutes; $i += $delta_time){
             // すべての車の更新
@@ -193,18 +200,20 @@ class Fields{
             // レース終了判定
             if(!$this->car_list){
                 echo "終了";
+                $this->printCourse($course);
                 $this->printResult();
                 break;
             }
             
             // 途中経過表示
-            if($i % (float)10 == 0){
+            if($i == $object_time){
                 print($i."秒経過\n");
                 $this->sortCars();
                 $this->sleep_s();
                 $this->printProgress();
                 echo "\n";
                 $this->sleep_s();
+                $object_time += $show_interval;
             }
         }
     }
