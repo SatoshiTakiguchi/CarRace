@@ -147,9 +147,25 @@ class Fields{
         }
     }
 
+    // コース表示
+    private function printCourse($course_list){
+        echo "コース概要\n";
+        $course_names = [
+            'straight' => "ストレート",
+            'corner' => "コーナー",
+            'before_corner' => "コーナー手前"
+        ];
+        $course_list = $course_list->getCourse();
+        foreach($course_list as $course_data){
+            $course = $course_data['course_object'];
+            echo "{$course_names[$course->getType()]}:{$course->getDistance()}m\n";
+        }
+    }
+
     // レース開始
     public function gameStart(){
         $course = new Course($this->course_range);
+        $this->printCourse($course);
         $delta_time = 0.5;
         echo "レーススタート\n";
 

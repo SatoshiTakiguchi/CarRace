@@ -29,9 +29,11 @@ class Course{
 
             $distance += $dist;
 
+            // コーナー手前追加処理
             if($road->getType() == "corner"){
                 // コーナー手前距離設定
                 $befor_coner_dist = 30;
+
                 // コーナー距離修正
                 $road->setDistance($road->getDistance() - $befor_coner_dist);
 
@@ -47,6 +49,11 @@ class Course{
     }
     private function addRoad($road, $distance){
         $this->course[] = ['course_object' => $road,'distance' => $distance];
+    }
+
+    //
+    public function getCourse(){
+        return $this->course;
     }
 
     // 現在位置からどの道にいるかを返す
