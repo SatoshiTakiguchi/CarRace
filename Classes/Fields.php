@@ -4,9 +4,9 @@ require 'Course/Course.php';
 require_once 'Calc.php';
 
 class Fields{
-    private $car_list = []; // 出場車のリスト
+    private $car_list = []; // 出場車のリスト　車の追加参照
     private $minutes = 1000; // 制限時間
-    private $course_range = 3000; // コースの長さ
+    private $course_range = 1000; // コースの長さ
     private $result = []; // 結果記録リスト
 
     // 車の追加
@@ -49,15 +49,30 @@ class Fields{
         }
     }
 
-    public function printProgress(){
-        $finish_cars = $this->result;
-        $moving_cars = arsort($this->car_list);
-        $res_list = array_merge($finish_cars, $moving_cars);
-        foreach($res_list as $car){
-            echo "";
+    // 途中結果リスト作成
+    public function createProgress(){
+        // 途中経過のリスト作成
+        $res_list = [];
+        foreach ($this->result as $car_data){
+            $res_list[] = ['name' => $car_data['name'], '状態' => "ゴール"];
         }
+        foreach ($this->car_list as $car_data){
+            $res_list[] = ['name' => $car_data['object']->getName(), '現在位置' => "{$car_data['position']}m"];
+        }
+        return $res_list;
+    }
+
+    // 途中結果出力
+    public function printProgress(){
+        // 途中経過のリスト作成
+        $res_list = $this->createProgress();
         
-        
+        // 途中経過の出力
+        for($i = 0; $i < count($res_list); $i++){
+            $car_data = $res_list[$i];
+            $num = $i + 1;
+            echo "{$num}位：{$car_data['name']} 状態：{$car_data['状態']}\n";
+        }
     }
 
     // 車の前進処理
@@ -74,10 +89,38 @@ class Fields{
         if($road->getAllowableVelocity() < $velocity){
             $car_data['object']->setVelocity(10);
             $car_data['penalty_time'] = 1;
-            echo "{$car_data['object']->getName()}はクラッシュした。\n";
+            echo "{$car_data['object']->getName()}はクラッシュした。\n\n";
+            sleep(1);
         }
 
         $car_data['position'] += Calc::move($velocity, $time);
+    }
+
+    // 並べ替え
+    private function sortCars(){
+        $origin_list = array_column($this->createProgress(),'name');
+
+        $positions = array_column($this->car_list,'position');
+        array_multisort($positions, SORT_DESC, $this->car_list);
+
+        $after_list = array_column($this->createProgress(),'name');
+        if(array_diff_assoc($origin_list, $after_list)){
+            echo "順位が変動した。\n";
+            foreach($after_list as $key => $val){
+                $origin = array_keys($origin_list, $val);
+                $origin = $origin[0];
+                if($key < $origin){
+                    $s = $key + 1;
+                    echo "{$s}位：{$val} ↑\n";
+                }
+                if($key > $origin){
+                    $s = $key + 1;
+                    echo "{$s}位：{$val} ↓\n";
+                }
+            }
+            echo "\n";
+            sleep(1);
+        }
     }
 
     // レース開始
@@ -88,28 +131,38 @@ class Fields{
 
         // 任意秒数ごとに更新
         for($i = 0 + $delta_time; $i < $this->minutes; $i += $delta_time){
+            // すべての車の更新
+            for($j = 0; $j < count($this->car_list); $j++){
+                $car = &$this->car_list[$j];
+                // 加速処理
+                $car['object']->velocityUp($delta_time);
+                // 道取得
+                $road = $course->getRoad($car['position']);
+                // 前進処理
+                $this->forwardCar($car,$delta_time,$road);
+                // ゴール判定→結果リストに格納
+                if($car['position'] >= $this->course_range){
+                    $this->resultInput($car,$i);
+                    array_splice($this->car_list,$j,1);
+                    sleep(1);
+                }
+            }
+
+            // レース終了判定
             if(!$this->car_list){
                 echo "終了";
                 $this->printResult();
                 break;
             }
-            // すべての車の更新
-            for($j = 0; $j < count($this->car_list); $j++){
-                $car = &$this->car_list[$j];
-                $car['object']->velocityUp($delta_time);
-                $road = $course->getRoad($car['position']);
-                $this->forwardCar($car,$delta_time,$road);
-                if($car['position'] >= $this->course_range){
-                    $this->resultInput($car,$i);
-                    array_splice($this->car_list,$j,1);
-                }
-            }
             
-            if($i % (float)5 == 0){
-                print($i % (float)5 ."\n");
-                // sleep(1);
+            // 途中経過表示
+            if($i % (float)10 == 0){
                 print($i."秒経過\n");
-                $this->showPosition();
+                $this->sortCars();
+                sleep(1);
+                $this->printProgress();
+                echo "\n";
+                sleep(1);
             }
         }
     }

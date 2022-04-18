@@ -10,7 +10,7 @@ class Honda extends Cars{
             $name = "Honda",
             $price = $price,
             $member_capacity = $member_capacity,
-            $acceleration = 25,
+            $acceleration = 30,
             $velocityMax = 160
         );
     }

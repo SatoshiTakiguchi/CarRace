@@ -13,20 +13,13 @@ class Ferrari extends Cars{
             $price = $price,
             $member_capacity = $member_capacity,
             $acceleration = 40,
-            $velocityMax = 200
+            $velocityMax = 300
         );
     }
 
     // 車情報表示
     public function showCarData(){
         parent::showCarData();
-        // echo "車種：{$this->name}\n";
-        // echo "値段：{$this->price}万円\n";
-        // echo "定員：{$this->member_capacity}人\n";
-        // echo "乗車人数：{$this->member}人\n";
-        // echo "現在速度：{$this->velocity}km/h\n";
-        // echo "最高速度{$this->velocityMax}km/h\n";
-        // echo "加速度：{$this->acceleration}(km/h)/s\n";
         echo "現在車高：{$this->height}mm\n";
         if($this->isLiftUp){
             echo "状態：リフトアップ中！\n";
