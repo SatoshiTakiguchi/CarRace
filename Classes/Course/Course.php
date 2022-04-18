@@ -8,12 +8,12 @@ class Course{
     private $course = []; // ['course_object' => 道, 'distance' => その道の終了位置]
 
     // コース作成
-    public function __construct($max_distance = 2000){
+    public function __construct($max_distance = 2000, $corner_rate = 30){
         $distance = 0;
         while($distance < $max_distance){
             // straight か cornerか
-            $p = mt_rand(0,100);
-            if($p<30){
+            $p = mt_rand(1,100);
+            if($corner_rate < $p){
                 $road = new Straight();
             }else{
                 $road = new Corner();

@@ -63,6 +63,9 @@ abstract class Cars{
     public function getMember(){
         return $this->member;
     }
+    public function getVelocityMax(){
+        return $this->velocityMax;
+    }
 
     // 速度代入
     public function setVelocity($velocity){

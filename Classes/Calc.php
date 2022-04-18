@@ -31,7 +31,7 @@ class Calc{
 
     // 時速と経過秒から移動距離算出
     public static function move($velocity,$time){
-        return round($velocity * 1000 / (60*60) * $time);
+        return round($velocity * 1000 / (60*60) * $time, 3);
     }
 
     // m/s^2に変換
