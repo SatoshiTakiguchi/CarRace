@@ -3,13 +3,13 @@ require_once 'Classes/Calc.php';
 
 abstract class Cars{
     protected String $name;
-    protected int $price =-1;
-    protected int $member = 0;
-    protected int $member_capacity = -1;
-    protected float $velocity = 0;
-    protected float $velocityMax = -1;
-    protected int $height = -1;
-    protected float $acceleration = -1;
+    protected int    $price;           // 万円
+    protected int    $member;
+    protected int    $member_capacity;
+    protected float  $velocity = 0;    // km/h
+    protected float  $velocityMax;     // km/h
+    protected int    $height;          // mm
+    protected float  $acceleration;    //km/hs
 
     // 車のランダム数生成
     public static function randomCreate($class,$min_range=1,$max_range=20){

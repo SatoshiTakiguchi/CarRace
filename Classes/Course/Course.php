@@ -19,6 +19,7 @@ class Course{
                 $road = new Corner();
             }
 
+            // 道の長さ
             $dist = $road->getDistance();
 
             // 全長を超えた時の処理
@@ -29,7 +30,7 @@ class Course{
 
             $distance += $dist;
 
-            // コーナー手前追加処理
+            // 道の追加
             if($road->getType() == "corner"){
                 // コーナー手前距離設定
                 $befor_coner_dist = 30;
@@ -42,7 +43,8 @@ class Course{
                 // 道の追加
                 $this->addRoad($befor_coner, $distance-30);
                 $this->addRoad($road, $distance);
-            }else{
+            }
+            else{
                 $this->addRoad($road, $distance);
             }
         }

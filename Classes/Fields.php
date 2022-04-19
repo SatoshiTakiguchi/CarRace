@@ -35,15 +35,44 @@ class Fields{
         $this->car_list[] = $car_data;
     }
 
-    // 車位置表示
-    public function showPosition(){
-        $cars = $this->car_list;
-        for($i = 0; $i < count($cars); $i++){
-            $name = $cars[$i]['object']->getName();
-            $dist = $cars[$i]['position'];
-            print("{$name}:{$dist}m"."\n");
+    // 車の前進処理
+    private function forwardCar(&$car_data,$time,$road){
+        // ペナルティ時間処理
+        if($car_data['penalty_time'] > 0){
+            $car_data['penalty_time'] -= $time;
+            return;
         }
-        echo "\n";
+
+        $velocity = $car_data['object']->getVelocity();
+
+        // 道の許容速度処理
+        if($road->getAllowableVelocity() < $velocity){
+            // ペナルティ処理
+            $car_data['object']->setVelocity(10);
+            $car_data['penalty_time'] = $this->penalty_time;
+            $car_data['crush_num'] += 1;
+
+            echo "{$car_data['object']->getName()}はクラッシュした。\n\n";
+            $this->sleep_s();
+        }
+
+        $car_data['position'] += Calc::move($velocity, $time);
+    }
+
+    // 車操作
+    private function operationCar($car, $delta_time, $road){
+        $road_type = $road->getType();
+        $velocity = $car->getVelocity();
+
+        // コーナー前かつ速度が50km/h以上なら
+        if($road_type == "before_corner" && $velocity > 50){
+            // 減速処理
+            $num = Driver::brakeStrength();
+            $car->velocityDown($delta_time, $num);
+        }else{
+            // 加速処理
+            $car->velocityUp($delta_time);
+        }
     }
 
     // レース結果入力
@@ -78,31 +107,7 @@ class Fields{
             $res_list[] = ['name' => $car_data['object']->getName(), '状態' => "{$car_data['position']}m"];
         }
         return $res_list;
-    }
-
-    // 車の前進処理
-    private function forwardCar(&$car_data,$time,$road){
-        // ペナルティ時間処理
-        if($car_data['penalty_time'] > 0){
-            $car_data['penalty_time'] -= $time;
-            return;
-        }
-
-        $velocity = $car_data['object']->getVelocity();
-
-        // 道の許容速度処理
-        if($road->getAllowableVelocity() < $velocity){
-            // ペナルティ処理
-            $car_data['object']->setVelocity(10);
-            $car_data['penalty_time'] = $this->penalty_time;
-            $car_data['crush_num'] += 1;
-
-            echo "{$car_data['object']->getName()}はクラッシュした。\n\n";
-            $this->sleep_s();
-        }
-
-        $car_data['position'] += Calc::move($velocity, $time);
-    }
+    }    
 
     // 途中結果出力
     private function printProgress(){
@@ -134,22 +139,6 @@ class Fields{
         }
         echo "\n";
         $this->sleep_s();
-    }
-
-    // 車操作
-    private function operationCar($car, $delta_time, $road){
-        $road_type = $road->getType();
-        $velocity = $car->getVelocity();
-
-        // コーナー前かつ速度が50km/h以上なら
-        if($road_type == "before_corner" && $velocity > 50){
-            // 減速処理
-            $num = Driver::brakeStrength();
-            $car->velocityDown($delta_time, $num);
-        }else{
-            // 加速処理
-            $car->velocityUp($delta_time);
-        }
     }
 
     // コース表示

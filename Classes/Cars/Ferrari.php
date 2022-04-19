@@ -2,18 +2,24 @@
 require_once 'Cars.php';
 
 class Ferrari extends Cars{
-    protected $isLiftUp = false; // 車高
-    public function __construct($price=null, $acceleration=40, $velocityMax=300){
+    protected $isLiftUp = false; // リフトアップしているか
+
+    public function __construct(
+        $price        = null, 
+        $acceleration = 40, 
+        $velocityMax  = 300
+    )
+    {
         $this->height = 1050;
         if(!$price){
             $price = mt_rand(900,2000);
         }
         parent::__construct(
-            $name = "Ferrari",
-            $price = $price,
+            $name            = "Ferrari",
+            $price           = $price,
             $member_capacity = 2,
-            $acceleration = $acceleration,
-            $velocityMax = $velocityMax
+            $acceleration    = $acceleration,
+            $velocityMax     = $velocityMax
         );
     }
 
