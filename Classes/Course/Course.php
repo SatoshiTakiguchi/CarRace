@@ -6,11 +6,15 @@ require 'Road/BeforeCorner.php';
 
 class Course{
     private $course = []; // ['course_object' => 道, 'distance' => その道の終了位置]
-
+    private $course_range;
     // コース作成
-    public function __construct($max_distance = 2000, $corner_rate_percent = 30){
+    public function __construct(
+        $course_range = 2000, 
+        $corner_rate_percent = 50,
+    ){
+        $this->course_range = $course_range;
         $distance = 0;
-        while($distance < $max_distance){
+        while($distance < $this->course_range){
             // straight か cornerか
             $p = mt_rand(1,100);
             if($corner_rate_percent < $p){
@@ -23,8 +27,8 @@ class Course{
             $dist = $road->getDistance();
 
             // 全長を超えた時の処理
-            if($max_distance < $distance + $dist){
-                $road->setDistance($max_distance - $distance);
+            if($this->course_range < $distance + $dist){
+                $road->setDistance($this->course_range - $distance);
                 $dist = $road->getDistance();
             }
 
@@ -57,6 +61,9 @@ class Course{
     // コースリスト取得
     public function getCourse(){
         return $this->course;
+    }
+    public function getCourseRange(){
+        return $this->course_range;
     }
 
     // 現在位置からどの道にいるかを返す

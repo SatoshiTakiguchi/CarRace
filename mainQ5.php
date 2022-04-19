@@ -5,15 +5,18 @@ require 'Classes/Cars/Nissan.php';
 require 'Classes/Cars/Ferrari.php';
 require 'Classes/Cars/Toyota.php';
 
+require 'Classes/Course/Course.php';
 require 'Classes/Fields.php';
 
 $field = new Fields();
+
+$course = new Course();
+$field->addCourse($course);
 
 $honda = new Honda();
 $nissan = new Nissan();
 $ferrari = new Ferrari();
 $toyota = new Toyota();
-
 // ドライバー乗車
 $honda->memberCountUp();
 $nissan->memberCountUp();

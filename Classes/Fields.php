@@ -1,26 +1,20 @@
 <?php
 
-require 'Course/Course.php';
 require_once 'Calc.php';
 require 'Classes/Driver.php';
 
 class Fields{
     private $car_list = []; // 出場車のリスト　車の追加参照
     private $limit; // 制限時間
-    private $course_range; // コースの長さ
-    private $corner_rate;
+    private $course;
     private $result = []; // 結果記録リスト
     private $penalty_time;
 
     public function __construct(
-        $course_range = 3000,
         $limit = 1000,
-        $corner_rate = 50,
         $penalty_time = 2
     ){
-        $this->course_range = $course_range;
         $this->limit = $limit;
-        $this->corner_rate = $corner_rate;
         $this->penalty_time = $penalty_time;
     }
 
@@ -33,6 +27,11 @@ class Fields{
         $car_data['penalty_time'] = 0;
         $car_data['crush_num'] = 0;
         $this->car_list[] = $car_data;
+    }
+
+    // コース追加
+    public function addCourse($course){
+        $this->course = $course;
     }
 
     // 車の前進処理
@@ -160,7 +159,7 @@ class Fields{
                 echo "\n";
             }
         }
-        echo "計：{$this->course_range}m\n";
+        echo "計：{$this->course->getCourseRange()}m\n";
     }
 
     // ドライバーの有無判定
@@ -175,11 +174,18 @@ class Fields{
         }
     }
 
+    // コース有無チェック
+    private function isCourse(){
+        if(!$this->course){
+            echo "コースが設定されていません。";
+        }
+    }
+
     // レース開始
     public function gameStart(){
         $this->isDriver();
-        $course = new Course($this->course_range, $this->corner_rate);
-        $this->printCourse($course);
+        
+        $this->printCourse($this->course);
         $this->sleep_s();
 
         $delta_time = 0.1;
@@ -194,14 +200,14 @@ class Fields{
                 // 車取得
                 $car = &$this->car_list[$j];
                 // 道取得
-                $road = $course->getRoad($car['position']);
+                $road = $this->course->getRoad($car['position']);
                 // 車の操作
                 $this->operateCar($car['object'], $delta_time, $road);
                 
                 // 前進処理
                 $this->forwardCar($car,$delta_time,$road);
                 // ゴール判定→結果リストに格納
-                if($car['position'] >= $this->course_range){
+                if($car['position'] >= $this->course->getCourseRange()){
                     $this->resultInput($car,$i);
                     array_splice($this->car_list,$j,1);
                     $this->sleep_s();
@@ -211,7 +217,7 @@ class Fields{
             // レース終了判定
             if(!$this->car_list){
                 echo "終了\n";
-                $this->printCourse($course);
+                $this->printCourse($this->course);
                 $this->printResult();
                 break;
             }
