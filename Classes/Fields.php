@@ -9,13 +9,19 @@ class Fields{
     private $course;
     private $result = []; // 結果記録リスト
     private $penalty_time;
+    private $result_only;
+    private $enter;
 
     public function __construct(
-        $limit = 1000,
-        $penalty_time = 2
+        $limit        = 1000,
+        $penalty_time = 4,
+        $result_only  = false,
+        $enter        = true
     ){
-        $this->limit = $limit;
+        $this->limit        = $limit;
         $this->penalty_time = $penalty_time;
+        $this->result_only  = $result_only;
+        $this->enter        = $enter;
     }
 
     // 車の追加
@@ -39,6 +45,9 @@ class Fields{
         // ペナルティ時間処理
         if($car_data['penalty_time'] > 0){
             $car_data['penalty_time'] -= $time;
+            if($car_data['penalty_time'] <= 0){
+                echo "{$car_data['object']->getName()}はクラッシュから復帰した\n\n";
+            }
             return;
         }
 
@@ -51,7 +60,8 @@ class Fields{
             $car_data['penalty_time'] = $this->penalty_time;
             $car_data['crush_num'] += 1;
 
-            echo "{$car_data['object']->getName()}はクラッシュした。\n\n";
+            echo "{$car_data['object']->getName()}はクラッシュした。\n";
+            echo "復帰まで{$this->penalty_time}秒かかる！\n\n";
             $this->sleep_s();
         }
 
@@ -77,7 +87,7 @@ class Fields{
     // レース結果入力
     public function resultInput($car,$time){
         $name = $car['object']->getName();
-        echo "{$name}はゴールしました。\n";
+        echo "{$name}はゴールしました。\n\n";
         $this->result[] = ['object' => $car['object'],'time' => round($time, 3), 'crush_num' => $car['crush_num']];
     }
 
@@ -85,7 +95,7 @@ class Fields{
     public function printResult(){
         $res_list = $this->result;
         for($i = 0; $i < count($res_list); $i++){
-            $num = $i + 1;
+            $num = $i + 1; // 順位
             $car = $res_list[$i]['object'];
             $acceleration = Calc::toKmPerSS($car->getAcceleration());
             echo "{$num}位：{$car->getName()}(加速度:{$acceleration}m/s^2 最高速度:{$car->getVelocityMax()}km/h)\n";
@@ -123,17 +133,22 @@ class Fields{
         // 現在位置を知るための途中経過のリスト
         $res_list = $this->createProgress();
 
+        if(array_diff($origin_list,$after_list)){
+            echo "順位が変動した\n";
+            $this->sleep_s();
+        }
+
         foreach($after_list as $after_key => $val){
             $origin_key = array_keys($origin_list, $val)[0];
             $s = $after_key + 1;
             if($after_key < $origin_key){
-                echo "↑ {$s}位：{$val} 現在位置{$res_list[$after_key]['状態']}\n";
+                echo "↑ {$s}位：{$val} 現在位置：{$res_list[$after_key]['状態']}\n";
             }
             elseif($after_key > $origin_key){
-                echo "↓ {$s}位：{$val} 現在位置{$res_list[$after_key]['状態']}\n";
+                echo "↓ {$s}位：{$val} 現在位置：{$res_list[$after_key]['状態']}\n";
             }
             else{
-                echo "→ {$s}位：{$val} 現在位置{$res_list[$after_key]['状態']}\n";
+                echo "→ {$s}位：{$val} 現在位置：{$res_list[$after_key]['状態']}\n";
             }
         }
         echo "\n";
@@ -184,9 +199,13 @@ class Fields{
     // レース開始
     public function gameStart(){
         $this->isDriver();
-        
+        $this->isCourse();
         $this->printCourse($this->course);
+        $course_range = $this->course->getCourseRange();
         $this->sleep_s();
+
+        echo "EnterKeyを押してレース開始\n";
+        $this->enter();
 
         $delta_time = 0.1;
         echo "\nレーススタート\n";
@@ -207,7 +226,7 @@ class Fields{
                 // 前進処理
                 $this->forwardCar($car,$delta_time,$road);
                 // ゴール判定→結果リストに格納
-                if($car['position'] >= $this->course->getCourseRange()){
+                if($car['position'] >= $course_range){
                     $this->resultInput($car,$i);
                     array_splice($this->car_list,$j,1);
                     $this->sleep_s();
@@ -216,8 +235,10 @@ class Fields{
 
             // レース終了判定
             if(!$this->car_list){
-                echo "終了\n";
+                echo "終了\n\n";
                 $this->printCourse($this->course);
+                echo "EnterKeyを押して結果の表示へ\n";
+                $this->enter();
                 $this->printResult();
                 break;
             }
@@ -225,16 +246,29 @@ class Fields{
             $i = round($i,3);
             // 途中経過表示
             if((String)$i == (String)$object_time){
-                echo "\n{$i}秒経過\n";
+                echo "\n{$i}秒経過（コース全長:{$course_range}m)\n";
+                $this->sleep_s();
                 $this->printProgress();
                 $this->sleep_s();
                 $object_time += $show_interval;
+                echo "EnterKeyで次に進みます。\n";
+                $this->enter();
             }
         }
     }
     // sleep処理を一括でコメントするため
     private function sleep_s(){
-        // sleep(1);
+        if($this->result_only){
+            return;
+        }
+        sleep(1);
+    }
+
+    // エンター入力待ち
+    private function enter(){
+        if($this->enter){
+            fgets(STDIN);
+        }
     }
 }
 
