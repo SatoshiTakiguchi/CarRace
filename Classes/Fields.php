@@ -60,7 +60,7 @@ class Fields{
     }
 
     // 車操作
-    private function operationCar($car, $delta_time, $road){
+    private function operateCar($car, $delta_time, $road){
         $road_type = $road->getType();
         $velocity = $car->getVelocity();
 
@@ -163,8 +163,21 @@ class Fields{
         echo "計：{$this->course_range}m\n";
     }
 
+    // ドライバーの有無判定
+    private function isDriver(){
+        foreach($this->car_list as $car_data){
+            $car_object = $car_data['object'];
+            $member     = $car_object->getMember();
+            if($member == 0){
+                echo "{$car_object->getName()}にドライバーが乗ってません。";
+                break;
+            }
+        }
+    }
+
     // レース開始
     public function gameStart(){
+        $this->isDriver();
         $course = new Course($this->course_range, $this->corner_rate);
         $this->printCourse($course);
         $this->sleep_s();
@@ -183,7 +196,7 @@ class Fields{
                 // 道取得
                 $road = $course->getRoad($car['position']);
                 // 車の操作
-                $this->operationCar($car['object'], $delta_time, $road);
+                $this->operateCar($car['object'], $delta_time, $road);
                 
                 // 前進処理
                 $this->forwardCar($car,$delta_time,$road);

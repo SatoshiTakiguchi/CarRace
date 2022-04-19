@@ -4,7 +4,7 @@ require_once 'Classes/Calc.php';
 abstract class Cars{
     protected String $name;
     protected int    $price;           // 万円
-    protected int    $member;
+    protected int    $member = 0;
     protected int    $member_capacity;
     protected float  $velocity = 0;    // km/h
     protected float  $velocityMax;     // km/h
