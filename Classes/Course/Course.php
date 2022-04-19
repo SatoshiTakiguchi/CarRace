@@ -10,7 +10,7 @@ class Course{
     // コース作成
     public function __construct(
         $course_range = 2000, 
-        $corner_rate_percent = 50,
+        $corner_rate_percent = 25,
     ){
         $this->course_range = $course_range;
         $distance = 0;

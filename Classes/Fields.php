@@ -5,16 +5,16 @@ require 'Classes/Driver.php';
 
 class Fields{
     private $car_list = []; // 出場車のリスト　車の追加参照
-    private $limit; // 制限時間
+    private $limit;         // 制限時間
     private $course;
-    private $result = []; // 結果記録リスト
+    private $result = [];   // 結果記録リスト
     private $penalty_time;
-    private $result_only;
-    private $enter;
+    private $result_only;   // sleep処理の有無
+    private $enter;         // エンター入力の有無
 
     public function __construct(
         $limit        = 1000,
-        $penalty_time = 4,
+        $penalty_time = 5,
         $result_only  = false,
         $enter        = true
     ){
