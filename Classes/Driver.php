@@ -8,7 +8,7 @@ class Driver{
     // とりあえずクラス関数として定義
     // 単位（km/h/s）
     public static function brakeStrength(){
-        return mt_rand(10,40);
+        return mt_rand(20,50);
     }
 
 }

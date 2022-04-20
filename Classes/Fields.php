@@ -11,17 +11,23 @@ class Fields{
     private $penalty_time;
     private $result_only;   // sleep処理の有無
     private $enter;         // エンター入力の有無
+    private $show_interval; // 途中経過時間間隔(秒)
+    private $penalty_velocity;
 
     public function __construct(
-        $limit        = 1000,
-        $penalty_time = 5,
-        $result_only  = false,
-        $enter        = true
+        $limit            = 1000,
+        $penalty_time     = 5,
+        $result_only      = false,
+        $enter            = true,
+        $show_interval    = 30,
+        $penalty_velocity = 20
     ){
-        $this->limit        = $limit;
-        $this->penalty_time = $penalty_time;
-        $this->result_only  = $result_only;
-        $this->enter        = $enter;
+        $this->limit            = $limit;
+        $this->penalty_time     = $penalty_time;
+        $this->result_only      = $result_only;
+        $this->enter            = $enter;
+        $this->show_interval    = $show_interval;
+        $this->penalty_velocity = $penalty_velocity;
     }
 
     // 車の追加
@@ -56,12 +62,17 @@ class Fields{
         // 道の許容速度処理
         if($road->getAllowableVelocity() < $velocity){
             // ペナルティ処理
-            $car_data['object']->setVelocity(10);
+            $v = $car_data['object']->getVelocity();
+            $car_data['object']->setVelocity($this->penalty_velocity);
             $car_data['penalty_time'] = $this->penalty_time;
             $car_data['crush_num'] += 1;
 
-            echo "{$car_data['object']->getName()}はクラッシュした。\n";
-            echo "復帰まで{$this->penalty_time}秒かかる！\n\n";
+            $allowableV = $road->getAllowableVelocity();
+            $name = $car_data['object']->getName();
+            echo "{$name}は許容速度{$allowableV}kmのコーナーで{$v}kmの速度を出してしまった。\n";
+            echo "{$name}はクラッシュした。\n";
+            echo "速度が{$this->penalty_velocity}kmになる。\n";
+            echo "さらに{$this->penalty_time}秒間停止！\n\n";
             $this->sleep_s();
         }
 
@@ -78,7 +89,11 @@ class Fields{
             // 減速処理
             $num = Driver::brakeStrength();
             $car->velocityDown($delta_time, $num);
-        }else{
+        }
+        elseif($road_type == "corner"){
+            return;
+        }
+        else{
             // 加速処理
             $car->velocityUp($delta_time);
         }
@@ -142,14 +157,15 @@ class Fields{
             $origin_key = array_keys($origin_list, $val)[0];
             $s = $after_key + 1;
             if($after_key < $origin_key){
-                echo "↑ {$s}位：{$val} 現在位置：{$res_list[$after_key]['状態']}\n";
+                echo "↑ ";
             }
             elseif($after_key > $origin_key){
-                echo "↓ {$s}位：{$val} 現在位置：{$res_list[$after_key]['状態']}\n";
+                echo "↓ ";
             }
             else{
-                echo "→ {$s}位：{$val} 現在位置：{$res_list[$after_key]['状態']}\n";
+                echo "→ ";
             }
+            echo "{$s}位：{$val} 現在位置：{$res_list[$after_key]['状態']}\n";
         }
         echo "\n";
         $this->sleep_s();
@@ -210,7 +226,7 @@ class Fields{
         $delta_time = 0.1;
         echo "\nレーススタート\n";
 
-        $show_interval = 10;
+        $show_interval = $this->show_interval;
         $object_time = $show_interval;
         // 任意秒数ごとに更新
         for($i = 0 + $delta_time; $i < $this->limit; $i += $delta_time){

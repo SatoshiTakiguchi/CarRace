@@ -7,7 +7,7 @@ class Ferrari extends Cars{
     public function __construct(
         $price        = null, 
         $acceleration = 40, 
-        $velocityMax  = 300
+        $velocityMax  = 200
     )
     {
         $this->height = 1050;
